@@ -49,9 +49,10 @@ describe('Puffy Lux Page Add To Cart', function () {
         HomepageMethods.closeSubscriptionPopUp()
         cy.get('.cart-checkout__action .jsCheckoutSubmit').click({force:true})
         cy.wait(2000)
-        cy.get('#focusDiscount .focus-discount-code').click()
-        cy.get('#checkout_reduction_code').type('SAVE1350')
-        cy.get('#checkout_submit').click()
+        cy.get('#focusDiscount .focus-discount-code').click({force:true})
+        cy.get('#checkout_reduction_code').type('SAVE1350',{force:true})
+        cy.get('#checkout_submit').click({force:true})
+        cy.wait(3000)
         cy.contains(' Discount Applied').should('be.visible')
     })
 
