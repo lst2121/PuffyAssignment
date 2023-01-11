@@ -65,10 +65,11 @@ describe('Puffy Lux Home Page', function () {
         cy.contains('FIND A LOCATION').should('be.visible')
     })
 
-    it.skip('verify chat icon is working', function () {
+    it('verify chat icon is working', function () {
         HomepageMethods.visitPuffyLuxPage()
         HomepageMethods.clickOnChatIcon()
-        cy.contains('Puffy Customer Support').should('be.visible')
-        cy.get('#gorgias-chat-messenger-button').click()
+        HomepageMethods.closeSubscriptionPopUp()
+        HomepageMethods.verifyChatWindowIsOpen()
+        HomepageMethods.closeChatWindow()
     })
 })

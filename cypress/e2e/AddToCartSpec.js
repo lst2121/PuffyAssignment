@@ -21,6 +21,7 @@ describe('Puffy Lux Page Add To Cart', function () {
         AddToCartMethods.clickAddToCartButton()
         cy.wait('@viewCart')
         HomepageMethods.closeSubscriptionPopUp()
+        cy.wait(3000)
         AddToCartMethods.verifyItemsInCart('@viewCart')
     })
 
@@ -35,9 +36,26 @@ describe('Puffy Lux Page Add To Cart', function () {
         cy.get('#overlay').scrollIntoView()
         AddToCartMethods.clickOnRemoveIcon()
         cy.intercept('GET','https://puffy.com/cart?view=api').as('removeCart')
+        //cy.wait(3000)
         AddToCartMethods.clickOnConfirmRemoveButton()
         cy.wait('@removeCart')
-        AddToCartMethods.verifyItemsInCart('@removeCart')
+        //AddToCartMethods.verifyItemsInCart('@removeCart')
+        cy.get('@removeCart').then((xhr) => {
+            let obj = xhr.response.body
+            cy.log(obj)
+            cy.writeFile('cypress/fixtures/apiresponse.json',obj)
+        })
+        cy.wait(3000)
+        cy.fixture('apiresponse.json').then((data) => {
+            this.data = data
+            cy.log(this.data.cartTotal)
+        })
+
+        //cy.log(this.data.cartTotal)
+        cy.get('.cart-close__title').then((el) => {
+            let txt = el.text()
+            expect(txt).to.equal('Your Puffy Cart  '+ this.data.cartTotal+' Items')
+        })
     })
 
     it('checkout from the cart', () => {

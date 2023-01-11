@@ -19,6 +19,18 @@ class Homepage {
         cy.get('.chaticon.active').click()
     }
 
+    verifyChatWindowIsOpen() {
+        cy.get('#chat-window').its('0.contentDocument.body').as('btn')
+        cy.get('@btn').then(cy.wrap).find('.chat-title').then((el) => {
+            let txt = el.text()
+            cy.log(txt)
+            expect(txt).to.equal('Puffy Customer Support')
+        })
+    }
+
+    closeChatWindow() {
+        cy.get('#chat-button').its('0.contentDocument.body').then(cy.wrap).find('#gorgias-chat-messenger-button').click()
+    }
 }
 
 export default Homepage
